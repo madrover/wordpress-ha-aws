@@ -476,6 +476,7 @@
                 "mkdir /root/deploy;cd /root/deploy\n",
                 "git clone https://github.com/madrover/wordpress-ha-aws;cd wordpress-ha-aws/puppet\n",
                 "gem install io-console librarian-puppet\n",
+                "librarian-puppet install\n",
                 "puppet apply --modulepath ./modules manifests/site.pp\n"
               ]
             ]

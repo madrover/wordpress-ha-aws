@@ -1,6 +1,6 @@
 forge "https://forgeapi.puppetlabs.com"
 
-mod 'mayflower-php'
 mod 'puppetlabs-stdlib'
 mod 'puppetlabs-apache'
-mod 'hunner-wordpress'
+mod 'puppetlabs-mysql'
+mod 'maestrodev-wget'
