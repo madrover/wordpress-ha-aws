@@ -7,17 +7,18 @@ class wordpress::wp {
     # }
 
     # Copy the Wordpress bundle to /tmp
-    wget::fetch { "download Google's index":
+    wget::fetch { "download latest wordpress files":
         source      => 'http://wordpress.org/latest.tar.gz',
         destination => '/tmp/latest.tar.gz',
         timeout     => 0,
         verbose     => false,
+        before => Exec['extract'],
     }
     # Extract the Wordpress bundle
     exec { 'extract':
         cwd => "/tmp",
         command => "tar -xvzf latest.tar.gz",
-        require => File['/tmp/latest.tar.gz'],
+        #require => File['/tmp/latest.tar.gz'],
         path => ['/bin'],
     }
 
