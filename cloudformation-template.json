@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "AWS CloudFormation Sample Template WordPress_Single_Instance: WordPress is web software you can use to create a beautiful website or blog. This template installs WordPress with a local MySQL database for storage. It demonstrates using the AWS CloudFormation bootstrap scripts to deploy WordPress. **WARNING** This template creates an Amazon EC2 instance. You will be billed for the AWS resources used if you create a stack from this template.",
+  "Description": "WordPress template",
   "Parameters": {
     "KeyName": {
       "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
@@ -472,12 +472,17 @@
                 "#!/bin/bash \n",
                 "exec > /tmp/part-001.log 2>&1 \n",
                 "date >> /etc/provisioned.date \n",
-                "yum install puppet git gcc ruby-devel gcc -y \n",
-                "mkdir /root/deploy;cd /root/deploy\n",
-                "git clone https://github.com/madrover/wordpress-ha-aws;cd wordpress-ha-aws/puppet\n",
-                "gem install io-console librarian-puppet\n",
-                "librarian-puppet install\n",
-                "puppet apply --modulepath ./modules manifests/site.pp\n"
+                "yum install git gcc ruby-devel gcc -y \n",
+                "mkdir /home/ec2-user/deploy;cd /home/ec2-user/deploy\n",
+                "git clone https://github.com/madrover/wordpress-ha-aws\n",
+                "cd /home/ec2-user/deploy/wordpress-ha-aws/puppet\n",
+                "gem install puppet io-console librarian-puppet\n",
+                "/usr/local/bin/librarian-puppet install\n",
+                "/usr/local/bin/puppet apply --modulepath ./modules manifests/site.pp >> /var/log/puppet-bootstrap.log\n",
+                "/opt/aws/bin/cfn-signal -e 0 ",
+                "         --stack ", { "Ref" : "AWS::StackName" },
+                "         --resource WebServer ",
+                "         --region ", { "Ref" : "AWS::Region" }, "\n"
               ]
             ]
           }
